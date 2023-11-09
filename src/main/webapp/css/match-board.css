@@ -1,0 +1,86 @@
+@import "style.css";
+
+:root {
+    --container-width: 550px;
+    --container-height: 130px;
+}
+
+.kw-container {
+    display: inline-block;
+    position: relative;
+    width: var(--container-width);
+    height: var(--container-height);
+    margin-left: calc(50% - (var(--container-width) - 10px) / 2);
+    margin-top: calc(20% - (var(--container-height) - 10px) / 2);
+    border: var(--container-border-size) solid rgba(var(--container-border-color), 1.0);
+    padding: 5px;
+}
+
+.kw-table {
+    position: absolute;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: 10px;
+    left: 0px;
+    top: 0px;
+}
+
+#table {
+    text-align: center;
+}
+
+#table th {
+    font-size: 35px;
+}
+
+#table td {
+    font-size: 25px;
+}
+
+#table th+th, td+td {
+    padding-left: 20px;
+}
+
+#actions-container {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+#first-player-form, #second-player-form {
+    position: absolute;
+    right: 20px;
+}
+
+#first-player-form {
+    top: 50px;
+}
+
+#second-player-form {
+    top: 83px;
+}
+
+.kw-button {
+    font-size: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

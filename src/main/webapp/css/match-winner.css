@@ -1,0 +1,9 @@
+:root {
+    --body-bg-color: 225, 213, 205;
+    --button-hover-bg-color: 224, 171, 154;
+    --button-bg-color: 77, 143, 195;
+}
+
+body {
+    background: rgb(var(--body-bg-color));
+}

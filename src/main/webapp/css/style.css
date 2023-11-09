@@ -1,0 +1,45 @@
+:root {
+    --body-bg-color: 219, 211, 216;
+
+    --title-text-color: 87, 50, 128;
+
+    --container-bg-color: 219, 198, 196;
+    --container-border-color: 116, 86, 150;
+    --container-border-size: 3px;
+    
+    --table-header-text-color: 87, 50, 128;
+    --table-rows-text-color: 87, 22, 142;
+
+    --button-bg-color: 219, 184, 176;
+    --button-text-color: 87, 22, 142;
+    --button-border-color: 87, 50, 128;
+    --button-border-size: 2px;
+}
+
+body {
+    background: rgb(var(--body-bg-color));
+}
+
+.kw-container {
+    background-color: rgba(var(--container-bg-color), 1.0);
+    border: var(--container-border-size) solid rgba(var(--container-border-color), 1.0);
+}
+
+.kw-title {
+    color: rgba(var(--title-text-color), 1.0);
+}
+
+.kw-table-header {
+    color: rgba(var(--table-header-text-color), 1.0);
+}
+
+.kw-table-rows {
+    color: rgba(var(--table-rows-text-color), 1.0);
+}
+
+
+.kw-button {
+    background-color: rgba(var(--button-bg-color), 1.0);
+    color: rgba(var(--button-text-color), 1.0);
+    border: var(--button-border-size) solid rgba(var(--button-border-color), 1.0);
+}

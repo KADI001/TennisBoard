@@ -1,0 +1,91 @@
+@import "style.css";
+
+:root {
+    --container-width: 550px;
+    --container-height: 210px;
+}
+
+.kw-container {
+    position: relative;
+    background-color: rgba(var(--container-bg-color), 1.0);
+    width: var(--container-width);
+    height: var(--container-height);
+    margin-left: calc(50% - (var(--container-width) + 10px)  / 2);
+    margin-top: calc(25% - (var(--container-height) + 10px) / 2);
+    border: var(--container-border-size) solid rgba(var(--container-border-color), 1.0);
+}
+
+#firts-player-name-textfield, #second-player-name-textfield {
+    position: absolute;
+    font-size: 35px;
+    width: 200px;
+    height: 40px;
+    right: 0px;
+}
+
+#firts-player-name-label, #second-player-name-label {
+    color: rgba(var(--title-text-color), 1.0);
+    font-size: 35px;
+    font-weight: 800px;
+    left: 5px;
+}
+
+#first-player-container, #second-player-container{
+    position: absolute;
+    left: 10px;
+    font-weight: 800;
+    width: calc(var(--container-width) - 20px);
+}
+
+#first-player-container {
+    top: 10px;
+}
+
+#second-player-container {
+    top: 80px;
+}
+
+#actions-container {
+    position: absolute;
+    width: var(--container-width);
+    height: 50px;
+    text-align: center;
+    bottom: 10px;
+}
+
+#actions-container input[type=submit]{
+    position: absolute;
+    background-color: rgba(var(--button-go-back-bg-color), 1.0);
+    color: rgba(var(--title-text-color), 1.0);
+    width: 200px;
+    height: 50px;
+    font-size: 30px;
+    font-weight: 1000;
+    border: 2px solid rgba(var(--container-border-color), 1.0);
+}
+
+#back-button {
+    left: 10px;
+}
+
+#start-button {
+    right: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

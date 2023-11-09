@@ -1,0 +1,102 @@
+@import "style.css";
+
+:root{
+    --container-width: 550px;
+    --container-height: 450px;
+    --pagination-text-color: 87, 22, 142;
+    --pagination-text-border-color: 87, 50, 128;
+    --pagination-selected-text-color: 219, 211, 216;
+    --container-padding: 10px;
+}
+
+#page-navigation-container {
+    position: absolute;
+    display: inline-block;
+    bottom: var(--container-padding);
+    left: var(--container-padding);
+    text-align: center;
+}
+
+#page-navigation-container a {
+    font-weight: 800;
+    float: left;
+    font-size: 40px;
+    color: rgba(var(--pagination-text-color), 1.0);
+    padding: 8px 16px;
+    border: 1px solid rgba(var(--pagination-text-border-color), 1.0);
+    text-decoration: none;
+}
+
+#page-navigation-container a:active {
+    background-color: darkblue;
+}
+
+#page-navigation-container a[data-selected] {
+    background-color: rgba(var(--pagination-selected-text-color), 1.0);
+}
+
+#match-table {
+    display: block;
+    text-align: center;
+}
+
+#match-table th {
+    font-size: 55px;
+}
+
+#match-table th, tr {
+    padding: 0px 15px 0px 15px;
+}
+
+#match-table tr {
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.kw-container {
+    position: relative;
+    display: inline-block;
+    width: var(--container-width);
+    height: var(--container-height);
+    margin-left: calc(50% - ((var(--container-width) + (var(--container-padding) * 2 + var(--container-border-size) * 2)) / 2));
+    margin-top: calc(25% - ((var(--container-height) + (var(--container-padding) * 2 + var(--container-border-size) * 2)) / 2));
+    padding: var(--container-padding);
+}
+
+#actions-container {
+    position: absolute;
+    display: inline-block;
+    right: var(--container-padding);
+    bottom: var(--container-padding);
+}
+
+#go-back-button {
+    font-size: 35px;
+    width: 150px;
+    height: 65px;
+}
+
+#filter-container input[type=textfield]{
+    color: rgba(var(--title-text-color), 1.0);
+    font-size: 25px;
+}
+
+#filter-container input[type=submit]{
+    font-size: 30px;
+}
+
+#filter-container {
+    position: relative;
+}
+
+#filter-form {
+    position: relative;
+}
+
+
+
+
+
+
+
+
