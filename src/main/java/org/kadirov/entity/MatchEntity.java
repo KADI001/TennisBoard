@@ -11,15 +11,15 @@ public class MatchEntity {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "first_player_id", nullable = false)
     private PlayerEntity firstPlayer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "second_player_id", nullable = false)
     private PlayerEntity secondPlayer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "winner_player_id", nullable = false)
     private PlayerEntity winner;
 

@@ -2,10 +2,10 @@ package org.kadirov.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.kadirov.model.PlayerScore;
+import org.kadirov.service.PlayerScore;
 
 @Entity
-@Table(name = "Players_score")
+@Table(name = "Players_scores")
 public class PlayerScoreEntity implements PlayerScore {
 
     @Id
@@ -13,8 +13,9 @@ public class PlayerScoreEntity implements PlayerScore {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "player_id", nullable = false)
-    private int playerId;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "player_id", nullable = false)
+    private PlayerEntity player;
 
     @Column(name = "points")
     @ColumnDefault("0")
@@ -31,23 +32,23 @@ public class PlayerScoreEntity implements PlayerScore {
     public PlayerScoreEntity() {
     }
 
-    public PlayerScoreEntity(int id, int playerId, int points, int games, int sets) {
+    public PlayerScoreEntity(int id, PlayerEntity player, int points, int games, int sets) {
         this.id = id;
-        this.playerId = playerId;
+        this.player = player;
         this.points = points;
         this.games = games;
         this.sets = sets;
     }
 
-    public PlayerScoreEntity(int playerId, int points, int games, int sets) {
-        this.playerId = playerId;
+    public PlayerScoreEntity(PlayerEntity player, int points, int games, int sets) {
+        this.player = player;
         this.points = points;
         this.games = games;
         this.sets = sets;
     }
 
-    public PlayerScoreEntity(int playerId) {
-        this.playerId = playerId;
+    public PlayerScoreEntity(PlayerEntity player) {
+        this.player = player;
     }
 
     public int getId() {
@@ -55,8 +56,8 @@ public class PlayerScoreEntity implements PlayerScore {
     }
 
     @Override
-    public int getPlayerId() {
-        return playerId;
+    public PlayerEntity getPlayer() {
+        return player;
     }
 
     @Override
@@ -93,10 +94,5 @@ public class PlayerScoreEntity implements PlayerScore {
     @Override
     public void resetGames() {
         games = 0;
-    }
-
-    @Override
-    public void resetSets() {
-        sets = 0;
     }
 }

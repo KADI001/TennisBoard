@@ -1,0 +1,45 @@
+@import "style.css";
+
+:root{
+    --container-width: 400px;
+    --container-height: 280px;
+}
+
+#container {
+	display: inline-block;
+	text-align: center;
+	width: var(--container-width);
+	height: var(--container-height);
+	margin-left: calc(50% - var(--container-width) / 2);
+	margin-top: calc(50vh - var(--container-height) / 2);
+}
+
+#table {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.table-header {
+	font-size: 45px;
+}
+
+.table-body {
+	font-size: 35px;
+}
+
+.kw-container-title {
+	color: var(--title-text-color);
+	font-size: 50px;
+	margin: 0;
+}
+
+.action-container {
+	position: relative;
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.action-main-menu-button {
+	font-size: 25px;
+	width: 250px;
+}

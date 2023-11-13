@@ -12,7 +12,7 @@ public class HibernateRepository {
         this.sessionFactory = sessionFactory;
     }
 
-    protected <T> T execute(HibernateFunc<T> func){
+    public <T> T execute(HibernateFunc<T> func){
         T result;
 
         Session currentSession = sessionFactory.getCurrentSession();
@@ -30,7 +30,7 @@ public class HibernateRepository {
         return result;
     }
 
-    protected void execute(HibernateAction action){
+    public void execute(HibernateAction action){
         execute(session -> {
             action.execute(session);
             return null;

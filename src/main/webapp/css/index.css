@@ -1,4 +1,5 @@
 @import "style.css";
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&display=swap');
 
 :root {
     --container-width: 700px;
@@ -6,33 +7,91 @@
     --button-hover-bg-color: 224, 171, 154;
 }
 
-.kw-button {
-    margin-bottom: 5px;
-    width: 300px;
-    height: 100px;
-    font-size: 25px;
+body {
+    margin: 0;
+    background-color: #E3FDFD;
 }
 
-.kw-button:hover {
-    background: rgba(var(--button-hover-bg-color), 0.7);
+*, *:after, *:before {
+    box-sizing: border-box;
 }
 
-.kw-title {
-    margin-top: 20px;
-    font-size: 100px;
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
 }
 
-.kw-container {
-    position: relative;
+/*Content*/
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100vh;
+}
+
+.container {
+    padding: 10px 40px;
+    display: inline;
+    width: auto;
+    height: auto;
+    background-color: #A6E3E9;
+    border: 2px solid #B6FFFA;
+    border-radius: 6px;
+}
+
+.content-title {
+    font-size: 80px;
+    font-family: "Agbalumo";
+    color: #362FD9;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+.button {
+    padding: 10px;
+    width: 80%;
     text-align: center;
-    width: var(--container-width);
-    height: var(--container-height);
-    margin-left: calc(50% - (var(--container-width)) / 2);
-    margin-top: calc(25% - (var(--container-height)) / 2);
+    text-decoration: none;
+    font-family: "Agbalumo";
+    font-size: 40px;
+    color: #687EFF;
+    background-color: #CBF1F5;
+    border: 2px solid #71C9CE;
+    border-radius: 10px;
 }
 
-#actions-container {
-    position: absolute;
-    top: calc(80% - 150px);
-    left: calc(50% - 150px);
+.button:not(:active) {
+    transition: color .2s linear, width .1s linear;
+}
+
+.button:active {
+    color: #EEEEEE;
+}
+
+.button:hover:not(:active) {
+    color: #362FD9;
+}
+
+.button:hover {
+    width: 100%;
+}
+
+.buttons-container {
+    margin-top: 200px;
+    margin-bottom: 10px;
+}
+
+.buttons-container .button:last-child {
+    margin-top: 10px;
 }

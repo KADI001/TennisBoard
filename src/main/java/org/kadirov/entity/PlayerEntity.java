@@ -11,7 +11,7 @@ public class PlayerEntity {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     public PlayerEntity() {
@@ -46,11 +46,7 @@ public class PlayerEntity {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public PlayerEntity copy(){
+        return new PlayerEntity(id, name);
     }
 }

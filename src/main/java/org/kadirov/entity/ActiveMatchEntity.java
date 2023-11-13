@@ -13,11 +13,11 @@ public class ActiveMatchEntity {
     @Column(name = "id")
     private String id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "first_player_score_id", nullable = false)
     private PlayerScoreEntity firstPlayerScore;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "second_player_score_id", nullable = false)
     private PlayerScoreEntity secondPlayerScore;
 
