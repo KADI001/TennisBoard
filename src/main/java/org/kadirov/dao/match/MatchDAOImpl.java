@@ -2,9 +2,10 @@ package org.kadirov.dao.match;
 
 import jakarta.persistence.NoResultException;
 import org.kadirov.dao.EntityCRUDRepository;
+import org.kadirov.dao.HibernateFunc;
 import org.kadirov.dao.HibernateRepository;
+import org.kadirov.dto.Pagination;
 import org.kadirov.entity.MatchEntity;
-import org.kadirov.entity.PlayerEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +50,10 @@ public class MatchDAOImpl implements MatchDAO {
     public List<MatchEntity> findByNameOfFirstPlayerOrSecondPlayer(String name) {
         return hibernateRepository.execute(session -> {
             try {
-                List<MatchEntity> resultList = session.createQuery("from MatchEntity where firstPlayer.name = :name or secondPlayer.name = :name", MatchEntity.class)
+                return session
+                        .createQuery("from MatchEntity where firstPlayer.name = :name or secondPlayer.name = :name", MatchEntity.class)
                         .setParameter("name", name)
                         .getResultList();
-                return resultList;
             } catch (NoResultException nre) {
                 return new ArrayList<>();
             }
@@ -60,14 +61,36 @@ public class MatchDAOImpl implements MatchDAO {
     }
 
     @Override
-    public MatchEntity save(int firstPlayerId, int secondPlayerId, int winnerId) {
-        return hibernateRepository.execute(session -> {
-            MatchEntity matchEntity = new MatchEntity();
-            matchEntity.setFirstPlayer(new PlayerEntity(firstPlayerId));
-            matchEntity.setSecondPlayer(new PlayerEntity(secondPlayerId));
-            matchEntity.setWinner(new PlayerEntity(winnerId));
-            session.persist(matchEntity);
-            return matchEntity;
-        });
+    public Long count() {
+        return hibernateRepository.execute((HibernateFunc<Long>) session -> session
+                .createQuery("select count(m) from MatchEntity m", Long.class)
+                .getSingleResult());
+    }
+
+    @Override
+    public Long countWithFirstPlayerNameOrSecondPlayerName(String name) {
+        return hibernateRepository.execute((HibernateFunc<Long>) session -> session
+                .createQuery("select count(m) from MatchEntity m where m.firstPlayer.name = :name or m.secondPlayer.name = :name", Long.class)
+                .setParameter("name", name)
+                .getSingleResult());
+    }
+
+    @Override
+    public List<MatchEntity> findAllWithOffsetAndLimit(int offset, int limit) {
+        return hibernateRepository.execute((HibernateFunc<List<MatchEntity>>) session -> session
+                .createQuery("from " + MatchEntity.class.getSimpleName(), MatchEntity.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList());
+    }
+
+    @Override
+    public List<MatchEntity> findByNameWithOffsetAndLimit(String name, int offset, int limit) {
+        return hibernateRepository.execute((HibernateFunc<List<MatchEntity>>) session -> session
+                .createQuery("from MatchEntity where firstPlayer.name = :name or secondPlayer.name = :name", MatchEntity.class)
+                .setParameter("name", name)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList());
     }
 }

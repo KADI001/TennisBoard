@@ -22,7 +22,7 @@ public class MatchNewServlet extends BaseServlet {
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
 
-        activeMatchService = ((ActiveMatchService) servletContext.getAttribute("matchService"));
+        activeMatchService = ((ActiveMatchService) servletContext.getAttribute("activeMatchService"));
     }
 
     @Override

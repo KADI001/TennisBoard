@@ -8,27 +8,31 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.kadirov.dao.match.MatchDAO;
 import org.kadirov.dto.MatchesHistoryView;
+import org.kadirov.dto.Pagination;
 import org.kadirov.entity.MatchEntity;
+import org.kadirov.service.MatchService;
 import org.kadirov.servlet.exception.BadRequestException;
 import org.kadirov.servlet.exception.ExceptionMessages;
 import org.kadirov.servlet.exception.InternalServerException;
+import org.kadirov.util.PageUtil;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/match-history")
 public class MatchHistoryServlet extends BaseServlet {
 
-    public static final int PAGE_PER_SECTION = 3;
+    public static final int PAGES_PER_SECTION = 3;
     public static final int MATCH_AMOUNT_PER_PAGE = 5;
     public static final int DEFAULT_PAGE = 1;
     private MatchDAO matchDAO;
+    private MatchService matchService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
 
         matchDAO = (MatchDAO) servletContext.getAttribute("matchDAO");
+        matchService = (MatchService) servletContext.getAttribute("matchService");
     }
 
     @Override
@@ -38,40 +42,39 @@ public class MatchHistoryServlet extends BaseServlet {
 
         boolean appliedFilter = playerName != null && !playerName.isBlank();
 
-        List<MatchEntity> matches;
-
-        try {
-            if(appliedFilter){
-                matches = matchDAO.findByNameOfFirstPlayerOrSecondPlayer(playerName);
-            } else {
-                matches = matchDAO.findAll();
-            }
-        }catch (Exception e){
-            throw new InternalServerException(ExceptionMessages.DATA_BASE_ERROR(), e);
-        }
-
-        int maxPageAmount = (int) Math.ceil(matches.size() / (MATCH_AMOUNT_PER_PAGE + 0f));
         int currentPage;
 
         try {
             currentPage = pageStr == null ? DEFAULT_PAGE : Integer.parseInt(pageStr);
-
-            if(currentPage <= 0)
-                currentPage = 1;
-            else if(currentPage > maxPageAmount)
-                currentPage = maxPageAmount;
-
         } catch (Exception e){
             throw new BadRequestException(ExceptionMessages.NOT_VALID_PARAMETER("page"), e);
         }
 
-        int g = (int) Math.ceil(currentPage / (PAGE_PER_SECTION + 0f));
-        int paginationFrom = (g * PAGE_PER_SECTION - PAGE_PER_SECTION) + 1;
-        int paginationTo = g * PAGE_PER_SECTION;
+        Pagination<MatchEntity> pagination;
 
-        int listFrom = MATCH_AMOUNT_PER_PAGE * (currentPage - 1);
-        int listTo = Math.min((listFrom + MATCH_AMOUNT_PER_PAGE) - 1,  matches.size() - 1);
+        try {
+            if(appliedFilter)
+                pagination = matchService.getByNameWithPagination(playerName, currentPage, 5, 3);
+            else
+                pagination = matchService.getWithPagination(currentPage, 5, 3);
+        } catch (Exception e){
+            throw new InternalServerException(ExceptionMessages.DATA_BASE_ERROR(), e);
+        }
 
+        StringBuilder paginationHref = buildHref(appliedFilter, playerName);
+        int previousPage = PageUtil.clamp(currentPage - 1, 1, pagination.maxAmount());
+        int nextPage = PageUtil.clamp(currentPage + 1, 1, pagination.maxAmount());
+
+        MatchesHistoryView matchesHistoryView = new MatchesHistoryView(
+                appliedFilter, pagination, paginationHref.toString(),
+                playerName, previousPage, currentPage, nextPage);
+
+        req.setAttribute("matchesHistoryView", matchesHistoryView);
+
+        req.getRequestDispatcher("pages/match-history.jsp").forward(req, resp);
+    }
+
+    private static StringBuilder buildHref(boolean appliedFilter, String playerName) {
         StringBuilder paginationHref = new StringBuilder("/match-history?");
 
         if(appliedFilter){
@@ -82,14 +85,6 @@ public class MatchHistoryServlet extends BaseServlet {
         }
 
         paginationHref.append("page=");
-
-        MatchesHistoryView matchesHistoryView = new MatchesHistoryView(
-                appliedFilter, paginationFrom, paginationTo,
-                listFrom, listTo, paginationHref.toString(),
-                playerName, matches, currentPage, maxPageAmount);
-
-        req.setAttribute("matchesHistoryView", matchesHistoryView);
-
-        req.getRequestDispatcher("pages/match-history.jsp").forward(req, resp);
+        return paginationHref;
     }
 }

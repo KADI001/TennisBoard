@@ -19,10 +19,7 @@ import org.kadirov.entity.ActiveMatchEntity;
 import org.kadirov.entity.MatchEntity;
 import org.kadirov.entity.PlayerEntity;
 import org.kadirov.entity.PlayerScoreEntity;
-import org.kadirov.service.ActiveMatchService;
-import org.kadirov.service.ActiveMatchServiceImpl;
-import org.kadirov.service.MatchScoreService;
-import org.kadirov.service.MatchScoreServiceImpl;
+import org.kadirov.service.*;
 
 @WebListener
 public class ServletContextStartUpListener implements ServletContextListener {
@@ -40,6 +37,7 @@ public class ServletContextStartUpListener implements ServletContextListener {
     private MatchDAOImpl matchDAOImpl;
     private ActiveMatchService activeMatchService;
     private MatchScoreService matchScoreService;
+    private MatchService matchService;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -66,14 +64,16 @@ public class ServletContextStartUpListener implements ServletContextListener {
         h2PlayerScoreDAO = new H2PlayerScoreDAO(h2HibernateRepository);
         activeMatchService = new ActiveMatchServiceImpl(h2ActiveMatchesDAO);
         matchScoreService = new MatchScoreServiceImpl();
+        matchService = new MatchServiceImpl(matchDAOImpl);
 
         servletContext.setAttribute("session", sessionFactory.getCurrentSession());
         servletContext.setAttribute("playerDAO", playerDAOImpl);
         servletContext.setAttribute("matchDAO", matchDAOImpl);
         servletContext.setAttribute("activeMatchesDAO", h2ActiveMatchesDAO);
         servletContext.setAttribute("playerScoreDAO", h2PlayerScoreDAO);
-        servletContext.setAttribute("matchService", activeMatchService);
+        servletContext.setAttribute("activeMatchService", activeMatchService);
         servletContext.setAttribute("scoreService", matchScoreService);
+        servletContext.setAttribute("matchService", matchService);
     }
 
     private void initH2DataBaseTables(SessionFactory sessionFactory) {

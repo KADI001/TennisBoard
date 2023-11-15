@@ -8,8 +8,6 @@
     <title>Tennis scoreboard</title>
 </head>
 <body>
-    <%@ page import = "org.kadirov.entity.*, org.kadirov.dao.MatchDAO, java.util.List, org.kadirov.util.PageUtil"%>
-
     <div id="matches-container" class="kw-container">
 
         <div id="filter-container">
@@ -28,20 +26,20 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="i" begin="${matchesHistoryView.listFrom()}" end="${matchesHistoryView.listTo()}" >
+                <c:forEach var="match" items="${matchesHistoryView.pagination().getAtPage(matchesHistoryView.currentPage())}">
                     <tbody>
-                        <td>${matchesHistoryView.matches().get(i).getFirstPlayer().getName()}</td>
-                        <td>${matchesHistoryView.matches().get(i).getSecondPlayer().getName()}</td>
-                        <td>${matchesHistoryView.matches().get(i).getWinner().getName()}</td>
+                        <td>${match.getFirstPlayer().getName()}</td>
+                        <td>${match.getSecondPlayer().getName()}</td>
+                        <td>${match.getWinner().getName()}</td>
                     </tbody>
                 </c:forEach>
             </tbody>
         </table>
 
         <div id="page-navigation-container">
-                <a id="previous-page" href="${matchesHistoryView.paginationHref()}${PageUtil.clamp(currentPage - 1, 1, maxPageAmount)}"> < </a>
+                <a id="previous-page" href="${matchesHistoryView.paginationHref()}${matchesHistoryView.previousPage()}"> < </a>
 
-                <c:forEach var="page" begin="${matchesHistoryView.paginationFrom()}" end="${matchesHistoryView.paginationTo()}">
+                <c:forEach var="page" begin="${matchesHistoryView.pagination().from()}" end="${matchesHistoryView.pagination().to()}">
 
                     <c:choose>
 
@@ -49,7 +47,7 @@
                             <a id="page-${page}" href="${matchesHistoryView.paginationHref()}${page}" data-selected>${page}</a>
                         </c:when>
 
-                        <c:when test="${page <= maxPageAmount}">
+                        <c:when test="${page <= matchesHistoryView.pagination().maxAmount()}">
                             <a id="page-${page}" href="${matchesHistoryView.paginationHref()}${page}">${page}</a>
                         </c:when>
 
@@ -57,7 +55,7 @@
 
                 </c:forEach>
 
-                <a id="previous-page" href="${matchesHistoryView.paginationHref()}${PageUtil.clamp(currentPage + 1, 1, maxPageAmount)}"> > </a>
+                <a id="previous-page" href="${matchesHistoryView.paginationHref()}${matchesHistoryView.nextPage()}"> > </a>
             </div>
 
         <div id="actions-container">

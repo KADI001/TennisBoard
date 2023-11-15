@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.kadirov.dao.match.ActiveMatchesDAO;
 import org.kadirov.dao.match.MatchDAO;
+import org.kadirov.dao.player.PlayerDAO;
 import org.kadirov.dao.player.PlayerScoreDAO;
 import org.kadirov.dto.MatchFinishedView;
 import org.kadirov.entity.ActiveMatchEntity;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class MatchScoreServlet extends BaseServlet {
 
     private MatchDAO matchDAO;
+    private PlayerDAO playerDAO;
     private ActiveMatchesDAO activeMatchesDAO;
     private PlayerScoreDAO playerScoreDAO;
     private MatchScoreService matchScoreService;
@@ -33,10 +35,11 @@ public class MatchScoreServlet extends BaseServlet {
     public void init(ServletConfig config) {
         ServletContext servletContext = config.getServletContext();
 
-        activeMatchesDAO = ((ActiveMatchesDAO) servletContext.getAttribute("activeMatchesDAO"));
-        playerScoreDAO = ((PlayerScoreDAO) servletContext.getAttribute("playerScoreDAO"));
-        matchScoreService = ((MatchScoreService) servletContext.getAttribute("scoreService"));
+        activeMatchesDAO = (ActiveMatchesDAO) servletContext.getAttribute("activeMatchesDAO");
+        playerScoreDAO = (PlayerScoreDAO) servletContext.getAttribute("playerScoreDAO");
+        matchScoreService = (MatchScoreService) servletContext.getAttribute("scoreService");
         matchDAO = (MatchDAO) servletContext.getAttribute("matchDAO");
+        playerDAO = (PlayerDAO) servletContext.getAttribute("playerDAO");
     }
 
     @Override
@@ -129,14 +132,13 @@ public class MatchScoreServlet extends BaseServlet {
                     PlayerEntity h2FirstPlayer = activeMatch.getFirstPlayerScore().getPlayer();
                     PlayerEntity h2SecondPlayer = activeMatch.getSecondPlayerScore().getPlayer();
 
-                    PlayerEntity firstPlayer = new PlayerEntity(h2FirstPlayer.getName());
-                    PlayerEntity secondPlayer = new PlayerEntity(h2SecondPlayer.getName());
+                    PlayerEntity firstPlayer = playerDAO.findOrCreateByName(h2FirstPlayer.getName());
+                    PlayerEntity secondPlayer = playerDAO.findOrCreateByName(h2SecondPlayer.getName());
                     PlayerEntity winnerPlayer = h2WinnerPlayer.getPlayer().getName().equals(firstPlayer.getName()) ? firstPlayer : secondPlayer;
 
                     MatchEntity matchEntity = new MatchEntity(firstPlayer, secondPlayer, winnerPlayer);
 
                     matchDAO.save(matchEntity);
-                    matchEntity.setWinner(new PlayerEntity(h2WinnerPlayer.getPlayer().getName()));
 
                     activeMatchesDAO.deleteById(activeMatch.getId());
                 } catch (Exception e) {

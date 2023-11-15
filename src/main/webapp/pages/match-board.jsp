@@ -8,8 +8,6 @@
     <title>Tennis scoreboard</title>
 </head>
 <body>
-    <%@ page import = "org.kadirov.dao.*, org.kadirov.entity.*"%>
-
     <div class="kw-container" id="container">
         <table class="kw-table-header kw-table-rows" id="table">
             <thead>

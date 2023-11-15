@@ -6,14 +6,11 @@ import java.util.List;
 
 public record MatchesHistoryView(
         boolean appliedFilter,
-        int paginationFrom,
-        int paginationTo,
-        int listFrom,
-        int listTo,
+        Pagination<MatchEntity> pagination,
         String paginationHref,
         String playerName,
-        List<MatchEntity> matches,
+        int previousPage,
         int currentPage,
-        int maxPageAmount
+        int nextPage
 ) {
 }
